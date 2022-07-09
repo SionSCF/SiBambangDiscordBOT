@@ -14,11 +14,19 @@ const token = process.env.DISCORD_TOKEN
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const musicsPath = path.join(__dirname, 'commands/player');
+const musicFiles = fs.readdirSync(musicsPath).filter(file => file.endsWith('.js'));
 
 commandFiles.forEach(file => {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
     commands.push(command.data.toJSON());
+});
+
+musicFiles.forEach(file => {
+    const musicPath = path.join(musicsPath, file);
+    const music = require(musicPath);
+    commands.push(music.data.toJSON());
 });
 
 const rest = new REST({ version: '9' }).setToken(token)
